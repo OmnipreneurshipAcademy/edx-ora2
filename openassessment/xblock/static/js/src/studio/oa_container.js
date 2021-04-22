@@ -67,6 +67,8 @@ export class Container {
     this.containerItemClass = kwargs.containerItemClass;
     this.notifier = kwargs.notifier;
     this.addRemoveEnabled = (typeof kwargs.addRemoveEnabled === 'undefined') || kwargs.addRemoveEnabled;
+    this.templateTablePromptElement = kwargs.templateTablePromptElement;
+    this.addTableButtonElement = kwargs.addTableButtonElement;
 
     // Since every container item should be instantiated with
     // the notifier we were given, create a helper method
@@ -87,6 +89,7 @@ export class Container {
     if (this.addRemoveEnabled) {
       // Install a click handler for the add button
       $(this.addButtonElement).click($.proxy(this.add, this));
+      $(this.addTableButtonElement).click($.proxy(this.addTable, this));
 
       // Find items already in the container and install click
       // handlers for the delete buttons.
@@ -98,6 +101,7 @@ export class Container {
       );
     } else {
       $(this.addButtonElement).addClass('is--disabled');
+      $(this.addTableButtonElement).addClass('is--disabled');
       $(`.${this.removeButtonClass}`, this.containerElement).addClass('is--disabled');
     }
 
@@ -216,6 +220,51 @@ export class Container {
     const container = this;
     return $(`.${this.containerItemClass}`, this.containerElement)
       .map(function () { return container.createContainerItem(this); });
+  }
+
+  /**
+    Adds a new table type prompt.
+   * */
+  addTable() {
+    var tablePrompt = $(this.templateTablePromptElement)
+      .children().first()
+      .clone()
+      .removeAttr('id')
+      .toggleClass('is--hidden', false)
+      .toggleClass(this.containerItemClass, true)
+      .appendTo($(this.containerElement));
+
+    var tableConfiguration = {
+      change: function (table) {
+        var html = table.html().replace(/<p class="oa-html-content-text-place-holder" style="display: none"><\/p>/g,
+          '<p class="oa-html-content-text-place-holder" style="display: none">&nbsp;<\/p>');
+        tablePrompt.find('.openassessment_prompt_html_content').val(html);
+      }
+    };
+
+    var table = $(tablePrompt).oraTableBuilder(tableConfiguration);
+
+    // Since we just added the new element to the container,
+    // it should be the last one.
+    var container = this;
+    var containerItem = $("." + this.containerItemClass, this.containerElement).last();
+
+    // Install a click handler for the delete button
+    if (this.addRemoveEnabled) {
+      containerItem.find('.' + this.removeButtonClass)
+        .click(function (eventData) {
+          var containerItem = container.createContainerItem(eventData.target);
+          container.remove(containerItem);
+        });
+    } else {
+      containerItem.find('.' + this.removeButtonClass).addClass('is--disabled');
+    }
+
+    // Initialize the item, allowing it to install event handlers.
+    // Fire event handler for adding a new element
+    var handlerItem = container.createContainerItem(containerItem);
+    handlerItem.addEventListeners();
+    handlerItem.addHandler();
   }
 }
 
