@@ -624,8 +624,8 @@ class OpenAssessmentBlock(MessageMixin,
 
         # for table prompt
         fragment.add_css(load("static/css/table_builder.css"))
-        fragment.add_javascript(load("static/js/adg/lib/helpers.js"))
-        fragment.add_javascript(load("static/js/adg/lib/table_builder.js"))
+        fragment.add_javascript(load("static/js/src/adg/lib/helpers.js"))
+        fragment.add_javascript(load("static/js/src/adg/lib/table_builder.js"))
 
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
