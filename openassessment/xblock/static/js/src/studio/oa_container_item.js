@@ -237,7 +237,14 @@ export class Prompt {
 
      * */
   getHtmlContent() {
-    return $('.openassessment_prompt_html_content', this.element).first().val();
+    var table_html = $('.openassessment_prompt_html_content', this.element).first().val();
+
+    if (table_html === '') {
+      table_html = $('.field.comp-setting-entry.openassessment_prompt_description_wrapper.enable-header-editing',
+          this.element).html();
+    }
+
+    return table_html;
   }
 }
 

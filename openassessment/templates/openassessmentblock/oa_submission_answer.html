@@ -10,9 +10,7 @@
             </div>
             <article class="submission__answer__part__prompt">
                 <div class="submission__answer__part__prompt__value" id="submission__question__part__description__{{ forloop.counter }}_div">
-                    {% if part.prompt.prompt_type == 'html-control' %}
-                        <!-- do not display question table -->
-                    {% elif prompts_type == 'html' %}
+                    {% if prompts_type == 'html' %}
                         {{ part.prompt.description|safe }}
                     {% else %}
                         {{ part.prompt.description|linebreaks }}
