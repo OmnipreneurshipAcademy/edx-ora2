@@ -2,8 +2,7 @@
 {% load i18n %}
 {% spaceless %}
 {% block list_item %}
-<li class="openassessment__steps__step step--response is--in-progress is--showing ui-slidable__container"
-    tabindex="-1">
+<li class="openassessment__steps__step step--response is--in-progress is--showing ui-slidable__container" tabindex="-1">
 {% endblock %}
 
     <header class="step__header ui-slidable__control">
@@ -112,14 +111,27 @@
                 <form class="response__submission">
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
-                            <li class="submission__answer__part">
+                            <li class="submission__answer__part"
+                                data-prompt-type="{{ part.prompt.prompt_type }}"
+                                data-loop-counter="{{ forloop.counter }}"
+                                id="submission__answer__part__description__{{ forloop.counter }}_li"
+                            >
                                 <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
                                 <article class="submission__answer__part__prompt">
                                     <div class="submission__answer__part__prompt__copy">
-                                        {% if prompts_type == 'html' %}
-                                            {{ part.prompt.description|safe }}
+                                        {% if part.prompt.prompt_type == 'html-control' %}
+                                            <div class="submission__answer__part__prompt__copy mb0">
+                                                {{ part.prompt.description|safe }}
+                                            </div>
+                                            <div class="is--hidden" id="submission__answer__part__saved__state__{{ forloop.counter }}">
+                                                {{ part.text|safe }}
+                                            </div>
                                         {% else %}
-                                            {{ part.prompt.description|linebreaks }}
+                                            {% if prompts_type == 'html' %}
+                                                {{ part.prompt.description|safe }}
+                                            {% else %}
+                                                {{ part.prompt.description|linebreaks }}
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </article>
@@ -171,14 +183,23 @@
                                           {% endblocktrans %}
                                         {% endif %}
                                     </div>
+                                    {% if part.prompt.prompt_type == 'html-control' %}
+                                        <article class="submission__answer__part__prompt">
+                                            <div class="submission__answer__part__prompt__copy">
+                                                <div id="submission__answer__part__description__{{ forloop.counter }}">
+                                                    {{ part.prompt.html_content|safe }}
+                                                </div>
+                                            </div>
+                                        </article>
+                                    {% endif %}
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
-                                        class="submission__answer__part__text__value"
+                                        class="submission__answer__part__text__value {% if part.prompt.prompt_type == 'html-control' %} no-display {% endif %}"
                                         data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the prompt above." %}"
-                                        maxlength="100000"
+                                        {% if part.prompt.prompt_type != 'html-control' %} maxlength="100000" {% endif %}
                                     >{{ part.text }}</textarea>
                                 </div>
                                 {% with forloop.counter|stringformat:"s" as submission_num %}

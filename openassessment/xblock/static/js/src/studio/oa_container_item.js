@@ -128,6 +128,8 @@ export class Prompt {
   getFieldValues() {
     const fields = {
       description: this.description(),
+      prompt_type: this.promptType(),
+      html_content: this.getHtmlContent(),
     };
     return fields;
   }
@@ -215,6 +217,35 @@ export class Prompt {
      Clear all validation errors from the UI.
      * */
   clearValidationErrors() {}
+
+  /**
+     Get prompt type from current textarea.
+
+     Returns:
+     string
+
+     * */
+  promptType() {
+    return $('.openassessment_prompt_description', this.element).data('w-type') || 'text';
+  }
+
+  /**
+     Get html content of table
+
+     Returns:
+     string
+
+     * */
+  getHtmlContent() {
+    var table_html = $('.openassessment_prompt_html_content', this.element).first().val();
+
+    if (table_html === '') {
+      table_html = $('.field.comp-setting-entry.openassessment_prompt_description_wrapper.enable-header-editing',
+          this.element).html();
+    }
+
+    return table_html;
+  }
 }
 
 /**
