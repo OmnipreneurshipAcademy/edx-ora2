@@ -290,6 +290,19 @@ $.fn.oraTableBuilder = function ($config) {
             $(table).find('td').each(function () {
                 $(this).empty();
                 $(this).append($(_this.controls[value]).clone(true, true));
+
+                if($.browser.safari) {
+                    const checkbox = $(this).find('input');
+                    checkbox.click(
+                        prependCaption
+                    );
+
+                    function prependCaption() {
+                        const caption = $(table).find('caption');
+                        caption.detach();
+                        $(table).prepend(caption);
+                    }
+                }
             });
             change_cb(_this);
         })
@@ -357,6 +370,19 @@ $.fn.initORATableCheckbox = function (checkboxClass, disabled) {
 
             if (disabled) {
                 checkbox.prop('disabled', true);
+            }
+
+            if($.browser.safari) {
+                checkbox.click(
+                    prependCaption ()
+                );
+
+                function prependCaption() {
+                    const table = _this.find('table');
+                    const caption = _this.find('caption');
+                    caption.detach();
+                    table.prepend(caption);
+                }
             }
         })
     }
