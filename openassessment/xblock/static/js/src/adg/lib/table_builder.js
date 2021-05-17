@@ -374,7 +374,7 @@ $.fn.initORATableCheckbox = function (checkboxClass, disabled) {
 
             if($.browser.safari) {
                 checkbox.click(
-                    prependCaption ()
+                    prependCaption
                 );
 
                 function prependCaption() {
