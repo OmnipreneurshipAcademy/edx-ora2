@@ -291,18 +291,8 @@ $.fn.oraTableBuilder = function ($config) {
                 $(this).empty();
                 $(this).append($(_this.controls[value]).clone(true, true));
 
-                if($.browser.safari) {
-                    const checkbox = $(this).find('input');
-                    checkbox.click(
-                        prependCaption
-                    );
-
-                    function prependCaption() {
-                        const caption = $(table).find('caption');
-                        caption.detach();
-                        $(table).prepend(caption);
-                    }
-                }
+                var checkbox = $(this).find('input[type=checkbox]');
+                onClickCheckbox(checkbox, $(table), $(table).find('caption'));
             });
             change_cb(_this);
         })
@@ -372,18 +362,9 @@ $.fn.initORATableCheckbox = function (checkboxClass, disabled) {
                 checkbox.prop('disabled', true);
             }
 
-            if($.browser.safari) {
-                checkbox.click(
-                    prependCaption
-                );
-
-                function prependCaption() {
-                    const table = _this.find('table');
-                    const caption = _this.find('caption');
-                    caption.detach();
-                    table.prepend(caption);
-                }
-            }
+            var table = _this.find('table');
+            var caption = _this.find('caption');
+            onClickCheckbox(checkbox, table, caption);
         })
     }
 
@@ -459,4 +440,17 @@ $.fn.openassessmentEditableTableHeaders = function ($config) {
     }
 
     return new plugin();
+}
+
+function onClickCheckbox (checkbox, table, caption) {
+    if($.browser.safari) {
+        checkbox.click(
+            prependCaption
+        );
+
+        function prependCaption() {
+            caption.detach();
+            table.prepend(caption);
+        }
+    }
 }
