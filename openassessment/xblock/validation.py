@@ -141,14 +141,9 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         # Student Training must have at least one example, and all
         # examples must have unique answers.
         if assessment_dict.get('name') == 'student-training':
-            answers = []
             examples = assessment_dict.get('examples')
             if not examples:
                 return False, _('You must provide at least one example response for learner training.')
-            for example in examples:
-                if example.get('answer') in answers:
-                    return False, _('Each example response for learner training must be unique.')
-                answers.append(example.get('answer'))
 
         # Staff grading must be required if it is the only step
         if assessment_dict.get('name') == 'staff-assessment' and len(assessments) == 1:
