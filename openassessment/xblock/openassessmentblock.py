@@ -853,7 +853,10 @@ class OpenAssessmentBlock(MessageMixin,
         elif len(value) == 1:
             # For backwards compatibility. To be removed after all code
             # is migrated to use prompts property instead of prompt field.
-            self.prompt = value[0]['description']
+            if value[0]['prompt_type'] == 'html-control':
+                self.prompt = json.dumps([value[0]])
+            else:
+                self.prompt = value[0]['description']
         else:
             self.prompt = json.dumps(value)
 
