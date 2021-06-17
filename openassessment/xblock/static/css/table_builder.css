@@ -180,7 +180,7 @@
 	outline: none;
 	vertical-align: middle;
 	padding: 28px 10px;
-	background-color: #00AFAA;
+	background-color: #0a267a;
 	word-wrap: break-word;
 	-webkit-hyphens: auto;
 	-ms-hyphens: auto;
@@ -207,7 +207,17 @@
 }
 
 .oa-table-container .oa-table-default th {
-    background-color: #00AFAA;
+    background-color: #0a267a;
+}
+
+.oa-table-container .oa-table-primary tbody tr:nth-child(odd) th, 
+.oa-table-container .oa-table-default tbody tr:nth-child(odd) th {
+    background-color: #b8211c;
+}
+
+.oa-table-container .oa-table-primary tbody tr:nth-child(even) th, 
+.oa-table-container .oa-table-default tbody tr:nth-child(even) th {
+    background-color: #cc615d;
 }
 
 .oa-table-container .checkbox-input {
