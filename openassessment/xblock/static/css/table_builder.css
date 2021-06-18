@@ -187,6 +187,11 @@
 	hyphens: auto;
 }
 
+.oa-table-container .oa-table-default th p,
+.oa-table-container .oa-table-primary th p {
+    background-color: transparent !important;
+}
+
 .oa-table-container .oa-table-primary th:not(:last-child),
 .oa-table-container .oa-table-primary td:not(:last-child) {
     border-right: 1px solid rgba(0,0,0,.2);
